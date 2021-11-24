@@ -56,7 +56,27 @@ header, main, footer {
 
     width: 100%;
     height: 100%;
+
+    background-color: white;
 }
+.loading-wrapper-hidden {
+    display: none;
+}
+.loading-wrapper-active {
+    display: block;
+}
+
+.loading-inner-wrapper {
+    width: 100%;
+    height: 100%;
+}
+.loading-inner-wrapper-hidden {
+    display: none;
+}
+.loading-inner-wrapper-active {
+    animation: fadeIn 1s ease-in;
+}
+
 .loading {
     position: relative;
     display: block;
@@ -69,11 +89,34 @@ header, main, footer {
 
     border-top: 1.2em solid blue;
     border-radius: 50%;
-    animation: loading-animation 0.5s ease-in infinite;
+    animation: loading-animation 0.5s linear infinite;
+}
+
+@keyframes fadeIn {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    1% {
+        display: block;
+        opacity: 0;
+    }
+
+    100% {
+        display: block;
+        opacity: 1;
+    }
 }
 @keyframes loading-animation {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
+    0% 
+    { 
+        transform: translate(-50%, -50%) rotate(0deg); 
+    }
+    100% 
+    { 
+        transform: translate(-50%, -50%) rotate(360deg); 
+    }
 }
 
 
@@ -86,9 +129,13 @@ header, main, footer {
     text-align: center;
 }
 
-
 /* About page. */
 .about h1 {
     text-align: center;
 }
 
+/* Not found page. */
+.not-found h1 {
+    text-align: center;
+    margin-top: 10%;
+}

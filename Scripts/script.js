@@ -3,16 +3,16 @@ import Router from './router.js'
 window.onload = async function() {
     const main = document.querySelector("main");
     const router = new Router(main);
-    router.onGoToPageStart.addHanler(() => switchLoading(true));
-    router.onGoToPageFinish.addHanler(setActiveLink);
-    router.onGoToPageFinish.addHanler(setTitle);
-    router.onGoToPageFinish.addHanler(() => switchLoading(false));
+    router.onbeforegotopage.addHanler(() => switchLoading(true));
+    router.ongotopage.addHanler(setActiveLink);
+    router.ongotopage.addHanler(setTitle);
+    router.ongotopage.addHanler(() => switchLoading(false));
 
     //Injects links into nav bar.
     injectLinksNav();
-
+ 
     //Loads first page.
-    await router.goToPage(0);
+    await router.goToPageIndex(0);
 
     //Injects buttons that 'work as links' into nav.
     function injectLinksNav() {
@@ -26,7 +26,7 @@ window.onload = async function() {
                 link.index = index;
                 link.onclick = async function() {
                     if (link.index != router.currentPageIndex) {
-                        await router.goToPage(this.index);
+                        await router.goToPageIndex(this.index);
                     }
                 }
         
@@ -58,17 +58,30 @@ window.onload = async function() {
     }
 }
 
-//Switches loading animation.
-//It is also usable as directly setting on and off.
-function switchLoading(on = null) {
-    const loadingWrapper = document.querySelector(".loading-wrapper"); 
-    const active = loadingWrapper.style.display == "none";
+//Sets loading animation on or off.
+//Also sets classes for smooth transition.
+function switchLoading(on) {
+    const loadingInnerWrapper = document.querySelector(".loading-inner-wrapper"); 
+    const loadingInnerWrapperActive = "loading-inner-wrapper-active";
+    const loadingInnerWrapperHidden = "loading-inner-wrapper-hidden";
 
-    if (active || on) {
-        loadingWrapper.style.display = "block";
+    const loadingWrapper = document.querySelector(".loading-wrapper");
+    const loadingWrapperActive = "loading-wrapper-active";
+    const loadingWrapperHidden = "loading-wrapper-hidden";
+    
+    if (on) {        
+        loadingInnerWrapper.classList.remove(loadingInnerWrapperHidden);
+        loadingInnerWrapper.classList.add(loadingInnerWrapperActive);        
+
+        loadingWrapper.classList.remove(loadingWrapperHidden);
+        loadingWrapper.classList.add(loadingWrapperActive);
     }
-    if(!active || !on) {
-        loadingWrapper.style.display = "none";
+    else {
+        loadingInnerWrapper.classList.remove(loadingInnerWrapperActive);
+        loadingInnerWrapper.classList.add(loadingInnerWrapperHidden);  
+
+        loadingWrapper.classList.remove(loadingWrapperActive);
+        loadingWrapper.classList.add(loadingWrapperHidden);
     }
 }
 
