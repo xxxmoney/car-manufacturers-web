@@ -1,11 +1,12 @@
-import PageInjector from "./pageInjector.js"
-import CustomEvent from "./customEvent.js";
+import PageInjector from "/Scripts/pageInjector.js"
+import CustomEvent from "/Scripts/customEvent.js"
 
 class Router {
     #injectElement;
-    #currentPageIndex = 0;
+    #currentPageId = 0;
     #pages = [];
     #notFoundPage;
+    #homePage;
 
     //Events that is dispatched in goToPage on start and finish.
     ongotopage;
@@ -19,27 +20,38 @@ class Router {
         this.#initPages();
     }
 
+    //Adds a new page to pages (also assigns id to page).
+    #addPage(page) {
+        page.id = this.#pages.length;
+        this.#pages.push(page);
+    }
     //Initializes pages.
     #initPages() {
-        this.#pages.push(new Page("/Pages/home.html", "/Home", "Home"));
-        this.#pages.push(new Page("/Pages/about.html", "/About", "About"));
-        this.#notFoundPage = new Page("/Pages/notFound.html", "/NotFound", "NotFound");
-    }
+        this.#homePage = new Page("/Pages/home.html", "/Home/", "Home");
+        this.#notFoundPage = new Page("/Pages/notFound.html", "/NotFound/", "Not Found");
+        this.#addPage(this.#homePage);
+        this.#addPage(new Page("/Pages/about.html", "/About/", "About"));
+    }    
     
-    get currentPageIndex() {
-        return this.#currentPageIndex;
+    get currentPageId() {
+        return this.#currentPageId;
     }
     get currentPage() {
-        return this.pages[this.currentPageIndex];
+        return this.pages[this.currentPageId];
     }
     get pages() {
         return this.#pages;
     }
-    
+
     //Goes to certain page. PageIndex is index of page in pages array.
     async #goToPage(page) {
         this.onbeforegotopage.dispatch();
 
+        if (page == null) {
+            page = this.#notFoundPage;
+        }
+
+        this.#currentPageId = page.id;
         await PageInjector.injectPage(this.#injectElement, page.url);
         window.history.pushState({}, null, window.location.origin + page.routerUrl);
 
@@ -48,10 +60,13 @@ class Router {
 
         this.ongotopage.dispatch();
     }
-    async goToPageIndex(pageIndex) {
-        this.#currentPageIndex = pageIndex;
-        const page = this.currentPage;
+    async goToPageId(pageId) {
+        const page = this.pages.find(x => x.id == pageId)
 
+        await this.#goToPage(page);
+    }
+    async goToPageRouterUrl(routerUrl) {
+        const page = this.pages.find(x => x.routerUrl == routerUrl);
         await this.#goToPage(page);
     }
     async goToPageNotFound() {
@@ -64,6 +79,7 @@ class Router {
 }
 
 class Page {
+    id;
     #url;
     #routerUrl;
     #name;

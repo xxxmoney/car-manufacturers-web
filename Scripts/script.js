@@ -1,6 +1,6 @@
-import Router from './router.js'
+import Router from '/Scripts/router.js'
 
-window.onload = async function() {
+window.onload = async function() {    
     const main = document.querySelector("main");
     const router = new Router(main);
     router.onbeforegotopage.addHanler(() => switchLoading(true));
@@ -10,23 +10,32 @@ window.onload = async function() {
 
     //Injects links into nav bar.
     injectLinksNav();
- 
-    //Loads first page.
-    await router.goToPageIndex(0);
+    
+    //Checks whether there is a query param present.
+    const search = window.location.search;
+    if (search == null || search == "") {
+        await router.goToPageId(0);
+    }
+    else {
+        //Gets router url from query param.
+        const params = new URLSearchParams(search);
+        const redirectUrl = params.get("redirect");
+        await router.goToPageRouterUrl(redirectUrl);
+    }    
 
     //Injects buttons that 'work as links' into nav.
     function injectLinksNav() {
         const nav = document.querySelector("nav");
 
         if (router?.pages != null && router.pages.length > 0) {
-            router.pages.forEach((page, index) => {
+            router.pages.forEach(page => {
                 const link = document.createElement("input");
                 link.type = "button";
                 link.value = page.name;
-                link.index = index;
+                link.pageId = page.id;
                 link.onclick = async function() {
-                    if (link.index != router.currentPageIndex) {
-                        await router.goToPageIndex(this.index);
+                    if (link.pageId != router.currentPageId) {
+                        await router.goToPageId(page.id);
                     }
                 }
         
@@ -37,12 +46,12 @@ window.onload = async function() {
 
     //Sets class to corresponding 'link'.
     function setActiveLink() {
-        const pageIndex = router.currentPageIndex;
+        const pageIndex = router.currentPageId;
         const className = "link-active";
         const links = document.querySelectorAll("header nav input");
 
-        links.forEach((link, index) => {
-            if (index == pageIndex) {
+        links.forEach(link => {
+            if (link.pageId == pageIndex) {
                 link.classList.add(className);
             }
             else {
