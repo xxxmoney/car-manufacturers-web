@@ -1,4 +1,5 @@
-import Router from '/Scripts/router.js'
+import Router from '/scripts/router.js'
+import CarInfo from '/scripts/carInfoApi.js'
 
 window.onload = async function() {    
     const main = document.querySelector("main");
@@ -14,7 +15,7 @@ window.onload = async function() {
     //Checks whether there is a query param present.
     const search = window.location.search;
     if (search == null || search == "") {
-        await router.goToPageId(0);
+        await router.goToHomePage();
     }
     else {
         //Gets router url from query param.

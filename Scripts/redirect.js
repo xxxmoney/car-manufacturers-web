@@ -1,4 +1,4 @@
-import Router from "/Scripts/router.js"
+import Router from "/scripts/router.js"
 
 //Redirect to index.html with a redirect query param.
 const params = new URLSearchParams();

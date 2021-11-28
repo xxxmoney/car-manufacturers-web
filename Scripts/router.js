@@ -1,5 +1,5 @@
-import PageInjector from "/Scripts/pageInjector.js"
-import CustomEvent from "/Scripts/customEvent.js"
+import PageInjector from "/scripts/pageInjector.js"
+import CustomEvent from "/scripts/customEvent.js"
 
 class Router {
     #injectElement;
@@ -27,10 +27,10 @@ class Router {
     }
     //Initializes pages.
     #initPages() {
-        this.#homePage = new Page("/Pages/home.html", "/Home/", "Home");
-        this.#notFoundPage = new Page("/Pages/notFound.html", "/NotFound/", "Not Found");
+        this.#homePage = new Page("/pages/home.html", "/Home/", "Home");
+        this.#notFoundPage = new Page("/pages/notFound.html", "/NotFound/", "Not Found");
         this.#addPage(this.#homePage);
-        this.#addPage(new Page("/Pages/about.html", "/About/", "About"));
+        this.#addPage(new Page("/pages/about.html", "/About/", "About"));
     }    
     
     get currentPageId() {
@@ -71,6 +71,9 @@ class Router {
     }
     async goToPageNotFound() {
         await this.#goToPage(this.#notFoundPage);
+    }
+    async goToHomePage() {
+        await this.#goToPage(this.#homePage);
     }
 
     static goToUrlNoHistory(url) {
