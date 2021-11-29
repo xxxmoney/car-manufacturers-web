@@ -30,6 +30,8 @@ class Router {
         this.#homePage = new Page("/pages/home.html", "/Home/", "Home");
         this.#notFoundPage = new Page("/pages/notFound.html", "/NotFound/", "Not Found");
         this.#addPage(this.#homePage);
+        this.#addPage(new Page("/pages/manufacturers.html", "/Manufacturers/", "Manufacturers"));
+        this.#addPage(new Page("/pages/makes.html", "/Makes/", "Makes"));
         this.#addPage(new Page("/pages/about.html", "/About/", "About"));
     }    
     

@@ -95,6 +95,14 @@ header, main, footer {
     animation: loading-animation 0.5s linear infinite;
 }
 
+h1 {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+}
+
 @keyframes fadeIn {
     0% {
         display: none;
@@ -128,20 +136,16 @@ header, main, footer {
     width: 100%;
     height: 100%;
 }
-.home h1 {
-    text-align: center;
-}
-
 /* About page. */
-.about h1 {
-    text-align: center;
-}
+
+/* Manufacturers page. */
+
 
 /* Not found page. */
 .not-found h1 {
-    text-align: center;
     margin-top: 10%;
 }
+
 
 @media only screen and (min-width: 600px) {
     header nav {

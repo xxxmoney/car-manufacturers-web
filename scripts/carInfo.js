@@ -10,6 +10,16 @@ class CarInfo {
     static async getManufacturers() {
         return await this.#getResult("/vehicles/GetAllManufacturers");
     }
+
+    static async getMakes() {
+        return await this.#getResult("/vehicles/GetAllMakes");
+    }
+    static async getVehicleTypesByMakeId(makeId) {
+        return await this.#getResult("/vehicles/GetVehicleTypesForMakeId/" + makeId);
+    }
+    static async getModelsByMakeId(makeId) {
+        return await this.#getResult("/vehicles/GetModelsForMakeId/" + makeId);
+    }
 }
 
 class Result {
@@ -24,6 +34,10 @@ class Manufacturer {
     Mfr_ID;
     Mfr_Name;
     VehicleTypes;
+}
+class Make {
+    Make_ID;
+    Make_Name;
 }
 
 export default CarInfo

@@ -1,13 +1,18 @@
 import Router from '/scripts/router.js'
-import CarInfo from '/scripts/carInfoApi.js'
+import CarInfoInjector from '/scripts/carInfoInjector.js'
 
 window.onload = async function() {    
+    //Router initialization.
     const main = document.querySelector("main");
     const router = new Router(main);
     router.onbeforegotopage.addHanler(() => switchLoading(true));
     router.ongotopage.addHanler(setActiveLink);
     router.ongotopage.addHanler(setTitle);
     router.ongotopage.addHanler(() => switchLoading(false));
+
+    //WIP
+    //CarInfoInjector initialization.
+    const carInfoInjector = new CarInfoInjector();
 
     //Injects links into nav bar.
     injectLinksNav();
