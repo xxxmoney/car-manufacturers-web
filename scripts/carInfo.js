@@ -8,11 +8,19 @@ class CarInfo {
     }
 
     static async getManufacturers() {
-        return await this.#getResult("/vehicles/GetAllManufacturers");
+        let arr = [];
+        for (let index = 1; index <= 2; index++) {
+            arr = arr.concat(await this.#getResult("/vehicles/GetAllManufacturers", index));            
+        }
+        return arr;        
     }
 
     static async getMakes() {
-        return await this.#getResult("/vehicles/GetAllMakes");
+        let arr = [];
+        for (let index = 1; index <= 2; index++) {
+            arr = arr.concat(await this.#getResult("/vehicles/GetAllMakes", index));            
+        }
+        return arr;  
     }
     static async getVehicleTypesByMakeId(makeId) {
         return await this.#getResult("/vehicles/GetVehicleTypesForMakeId/" + makeId);

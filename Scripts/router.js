@@ -27,11 +27,11 @@ class Router {
     }
     //Initializes pages.
     #initPages() {
-        this.#homePage = new Page("/pages/home.html", "/Home/", "Home");
+        this.#homePage = new Page("/pages/home.html", "/Home/", "Home Sweet Home", "/scripts/pages/home.js");
         this.#notFoundPage = new Page("/pages/notFound.html", "/NotFound/", "Not Found");
         this.#addPage(this.#homePage);
-        this.#addPage(new Page("/pages/manufacturers.html", "/Manufacturers/", "Manufacturers"));
-        this.#addPage(new Page("/pages/makes.html", "/Makes/", "Makes"));
+        this.#addPage(new Page("/pages/manufacturers.html", "/Manufacturers/", "Manufacturers", "/scripts/pages/manufacturers.js"));
+        this.#addPage(new Page("/pages/makes.html", "/Makes/", "Makes", "/scripts/pages/makes.js"));
         this.#addPage(new Page("/pages/about.html", "/About/", "About"));
     }    
     
@@ -56,6 +56,14 @@ class Router {
         this.#currentPageId = page.id;
         await PageInjector.injectPage(this.#injectElement, page.url);
         window.history.pushState({}, null, window.location.origin + page.routerUrl);
+
+        //Loads page's script (if there is any), otherwise removes script if present.
+        if (page.scriptUrl != null) {
+            PageInjector.injectScript(page.scriptUrl);
+        }
+        else {
+            PageInjector.unloadScript();
+        }
 
         //Loading animation testing.
         //await new Promise(resolve => setTimeout(resolve, 1000));
@@ -88,11 +96,13 @@ class Page {
     #url;
     #routerUrl;
     #name;
+    #scriptUrl;
 
-    constructor(url, routerUrl, name) {
+    constructor(url, routerUrl, name, scriptUrl = null) {
         this.#url = url;
         this.#routerUrl = routerUrl;
         this.#name = name;
+        this.#scriptUrl = scriptUrl;
     }
 
     get url() {
@@ -103,6 +113,9 @@ class Page {
     }
     get routerUrl() {
         return this.#routerUrl;
+    }
+    get scriptUrl() {
+        return this.#scriptUrl;
     }
 }
 
