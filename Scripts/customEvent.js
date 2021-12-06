@@ -1,17 +1,22 @@
 export default class CustomEvent {
-    #handlers = [];
+    handlers = [];
 
     addHanler(handler) {
-        this.#handlers.push(handler);
+        if (this.handlers == null) {
+            this.handlers = [];
+        }
+        this.handlers.push(handler);
     }
     dispatch() {
-        this.#handlers.forEach(handler => {
-            try {
-                handler();
-            } catch (error) {
-                console.log(error);
-            } 
-        });
+        if (this.handlers != null) {
+            this.handlers.forEach(handler => {
+                try {
+                    handler();
+                } catch (error) {
+                    console.log(error);
+                } 
+            });
+        }
     }
 
 }

@@ -57,9 +57,8 @@ class Router {
         await PageInjector.injectPage(this.#injectElement, page.url);
         window.history.pushState({}, null, window.location.origin + page.routerUrl);
 
-        const isScriptEmpty = page.scriptUrl != null;
         //Loads page's script (if there is any), otherwise removes script if present.
-        if (isScriptEmpty) {
+        if (page.scriptUrl != null) {
             PageInjector.injectScript(page.scriptUrl, this.ongotopage.dispatch);
         }
         else {
@@ -69,9 +68,7 @@ class Router {
         //Loading animation testing.
         //await new Promise(resolve => setTimeout(resolve, 1000));
 
-        if (isScriptEmpty) {
-            this.ongotopage.dispatch();
-        }
+        this.ongotopage.dispatch();
     }
     async goToPageId(pageId) {
         const page = this.pages.find(x => x.id == pageId)
