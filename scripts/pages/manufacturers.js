@@ -1,16 +1,9 @@
 import { ManufacturersInjector } from '/scripts/carInfoInjector.js'
-import CarInfo from '/scripts/carInfo.js'
-import switchLoading from '/scripts/loader.js'
 
-switchLoading(true);
+const injector = new ManufacturersInjector(document.querySelector("tbody"));
 
-const manufacturers = await CarInfo.getManufacturers();
-const injector = new ManufacturersInjector(manufacturers, document.querySelector("tbody"));
+await injector.inject();
 
-injector.inject();
-
-switchLoading(false);
-
-window.next = () => {
-    injector.inject();
+window.next = async () => {
+    await injector.inject();
 }

@@ -7,20 +7,12 @@ class CarInfo {
         return result.Results;
     }
 
-    static async getManufacturers() {
-        let arr = [];
-        for (let index = 1; index <= 2; index++) {
-            arr = arr.concat(await this.#getResult("/vehicles/GetAllManufacturers", index));            
-        }
-        return arr;        
+    static async getManufacturers(page = 1) {
+        return await this.#getResult("/vehicles/GetAllManufacturers", page);            
     }
 
-    static async getMakes() {
-        let arr = [];
-        for (let index = 1; index <= 2; index++) {
-            arr = arr.concat(await this.#getResult("/vehicles/GetAllMakes", index));            
-        }
-        return arr;  
+    static async getMakes(page = 1) {
+        return await this.#getResult("/vehicles/GetAllMakes", page);             
     }
     static async getVehicleTypesByMakeId(makeId) {
         return await this.#getResult("/vehicles/GetVehicleTypesForMakeId/" + makeId);

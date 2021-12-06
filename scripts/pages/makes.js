@@ -1,16 +1,9 @@
 import { MakesInjector } from '/scripts/carInfoInjector.js'
-import CarInfo from '/scripts/carInfo.js'
-import switchLoading from '/scripts/loader.js'
 
-switchLoading(true);
+const injector = new MakesInjector(document.querySelector("tbody"));
 
-const makes = await CarInfo.getMakes();
-const injector = new MakesInjector(makes, document.querySelector("tbody"));
+await injector.inject();
 
-injector.inject();
-
-switchLoading(false);
-
-window.next = () => {
-    injector.inject();
+window.next = async () => {
+    await injector.inject();
 }

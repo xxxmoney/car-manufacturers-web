@@ -97,7 +97,7 @@ header, main, footer {
 
     border-top: 1.2em solid blue;
     border-radius: 50%;
-    animation: loading-animation 0.5s linear infinite;
+    animation: loading-animation 0.5s ease-out infinite;
 }
 
 h1 {

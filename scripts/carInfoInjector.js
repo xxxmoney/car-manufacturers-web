@@ -1,27 +1,41 @@
+import CarInfo from '/scripts/carInfo.js'
+import switchLoading from '/scripts/loader.js'
+
 class CarInfoInjector {
-    #COUNT = 10;
+    #currentPage = 0;
+    #COUNT = 50;
     #skip = 0;
-    #arr;
-    #createTr;
+    #arr = [];
     #tbody;
+    #createTr;
+    #getArr;
       
-    constructor(arr, tbody, createTr) {
-        this.#arr = arr;
+    constructor(tbody, createTr, getArr) {
         this.#tbody = tbody;
         this.#createTr = createTr;
+        this.#getArr = getArr;
     }
 
-    inject() {
+    async inject() {
+        switchLoading(true);
+
         this.#skip += this.#COUNT;
+
+        if (this.#skip + this.#COUNT >= this.#arr.length) {
+            this.#currentPage++;
+            this.#arr = this.#arr.concat(await this.#getArr(this.#currentPage));
+        }
 
         this.#arr.slice(this.#skip, this.#skip + this.#COUNT).forEach(item => {            
             this.#tbody.append(this.#createTr(item));
         });
+
+        switchLoading(false);
     }
 }
 
 class ManufacturersInjector extends CarInfoInjector {
-    constructor(arr, tbody) {   
+    constructor(tbody) {   
         function createTr(manufacturer) {
             const tr = document.createElement("tr");     
             
@@ -40,12 +54,15 @@ class ManufacturersInjector extends CarInfoInjector {
     
             return tr;
         }
+        async function getArr(page) {
+            return await CarInfo.getManufacturers(page);
+        }
         
-        super(arr, tbody, createTr);
+        super(tbody, createTr, getArr);
     }    
 }
 class MakesInjector extends CarInfoInjector {
-    constructor(arr, tbody) {
+    constructor(tbody) {
         function createTr(make) {
             const tr = document.createElement("tr");
             
@@ -58,8 +75,11 @@ class MakesInjector extends CarInfoInjector {
     
             return tr;
         }
+        async function getArr(page) {
+            return await CarInfo.getMakes(page);
+        }
 
-        super(arr, tbody, createTr);
+        super(tbody, createTr, getArr);
     }
 }
 

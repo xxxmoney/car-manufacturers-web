@@ -14,13 +14,16 @@ export default class PageInjector {
 
     //Injects scripts at the end of body.
     //If script with SCRIPT_ID exists, it is replaced.
-    static injectScript(scriptUrl) {
+    static injectScript(scriptUrl, onload = null) {
         const body = document.querySelector("body");
 
         this.unloadScript();
         
         const script = document.createElement("script");
         script.id = this.#SCRIPT_ID;
+        if (onload != null) {
+            script.addEventListener("load", onload);
+        }
         //Ensures that module scripts are reloaded.
         script.src = scriptUrl + "?n=" + Math.floor(Math.random() * Math.pow(10, 5));
         script.type = "module";
